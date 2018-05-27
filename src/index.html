@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MGT UI</title>
+    <script src=".\node_modules\truffle-blockchain-utils\node_modules\web3\dist\web3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./index.scss">
 </head>
 
@@ -36,7 +37,7 @@
 		if (typeof web3 !== 'undefined') {
  			 web3 = new Web3(web3.currentProvider);
 		} else {
-  			web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+  			web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
 		}
 
 		web3.eth.defaultAccount = web3.eth.accounts[0];
@@ -293,7 +294,7 @@
 		sendEvent.watch(function(error, result) {
 			if (!error) {
 					$("#loader").hide();
-					$("#message").html(result.args.value + " sent from address: " + result.args.from + " to address: " + result.args.to)
+					$("#message").html(result.args.amount + " sent from address: " + result.args.from + " to address: " + result.args.to)
 			} else {
 				$("#loader").hide();
 				console.log(error);
