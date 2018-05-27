@@ -1,0 +1,33 @@
+body {
+	font-family: "Lucida Console", Monospace;
+	color: #66ff99;
+
+	/* fallback */
+	background: url(http://users.jyu.fi/~mialkivi/img/7701.jpg) no-repeat left top;
+	background-size: cover;
+}
+
+.container {
+	width: 50%;
+	margin: 0 auto;
+}
+
+label {
+	display: block;
+}
+
+#message {
+	margin-top: 70px;
+}
+
+#loader {
+	width: 30px;
+	display: none;
+}
+
+.credit {
+	bottom: 0%;
+	position: fixed;
+	font-size: 10px;
+	float: right;
+}
