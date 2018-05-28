@@ -3,12 +3,14 @@ import { default as Web3 } from "web3";
 import { default as contract } from "truffle-contract";
 
 // Importing compiled contracts here
+import token_artifact from "../build/contracts/MiggersToken.json";
 
 // Importing styles
 import styles from "./styles/index.scss";
 
 // Making usable abstraction from our artifacts, so we can use it in code.
 // var contract = contract(contract_abi);
+var Token = contract(token_artifact);
 
 window.App = {
     /**
@@ -27,10 +29,69 @@ window.App = {
      */
     init: () => {
         App.initWeb3();
-        // Init your contract here and set web3provider to it.
-    }
+        Token.setProvider(web3.currentProvider);
+
+        web3.eth.getAccounts((err, accounts) => {
+        	if (accounts.length == 0)
+        		alert("Couldn't find accounts, configure your MetaMask.");
+        	web3.eth.defaultAccount = accounts[0];
+        	console.log(accounts.length);
+        	console.log(web3.eth.defaultAccount);
+        	App.getBalance();
+        })
+        	.catch(error => {
+        		alert(error);
+        	});
+    },
+
+    getBalance: () => {
+    	Token.deployed()
+    		.then(instance => {
+    			return instance.balanceOf(web3.eth.defaultAccount);
+    		})
+    		.then(value => {
+    			console.log(value);
+    			console.log(value.toNumber());
+    			document.getElementById("balance").innerHTML = value.toNumber();
+    		})
+    		.catch(error => {
+    			console.log(error);
+    		});
+    }	
+	
+
 };
 
+
+window.functions = {
+
+
+	send: () => {
+		
+		var loader = document.getElementById("loader");
+		loader.style.display == "block";
+		var toAddress = document.getElementById("to").value;
+		console.log(toAddress);
+		var amount = document.getElementById("amount").value;
+		
+		Token.deployed()
+			.then(instance => {
+				return instance.transfer(toAddress, amount);
+			})	
+			.then(value => {
+				if (true) {
+					document.getElementById("message").innerHTML = "Transaction sent to address " + toAddress +
+				". Amount: " + amount;
+				}
+				console.log(value);
+				loader.style.display == "none";
+			})
+			.catch(error => {
+				document.getElementById("message").innerHTML = "Transaction failed!";
+				console.log(error);
+			})
+	} 
+};
 /**
  * Initializing our App on window load
  * 'load' Happens when browser window loads

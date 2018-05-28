@@ -13,6 +13,7 @@ body {
 }
 
 label {
+	margin-top: 20px;
 	display: block;
 }
 
@@ -23,6 +24,11 @@ label {
 #loader {
 	width: 30px;
 	display: none;
+}
+
+.confirm {
+	transition: all 0.5s;
+	cursor: pointer;
 }
 
 .credit {
