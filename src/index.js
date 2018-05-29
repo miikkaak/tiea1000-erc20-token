@@ -30,7 +30,7 @@ window.App = {
     init: () => {
         App.initWeb3();
         Token.setProvider(web3.currentProvider);
-
+        web3.eth.getAccounts(console.log);
         web3.eth.getAccounts((err, accounts) => {
         	if (accounts.length == 0)
         		alert("Couldn't find accounts, configure your MetaMask.");
@@ -76,15 +76,16 @@ window.functions = {
 		
 		Token.deployed()
 			.then(instance => {
-				return instance.transfer(toAddress, amount);
+				return instance.transfer(toAddress, amount, { from: web3.eth.defaultAccount});
 			})	
 			.then(value => {
 				if (true) {
 					document.getElementById("message").innerHTML = "Transaction sent to address " + toAddress +
 				". Amount: " + amount;
+				loader.style.display == "none";
+				App.getBalance();
 				}
 				console.log(value);
-				loader.style.display == "none";
 			})
 			.catch(error => {
 				document.getElementById("message").innerHTML = "Transaction failed!";
